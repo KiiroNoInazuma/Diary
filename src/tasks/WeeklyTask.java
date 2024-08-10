@@ -1,4 +1,12 @@
 package tasks;
 
-public class WeeklyTask {
+import entities.Task;
+
+import java.time.LocalDate;
+
+public class WeeklyTask extends Task {
+    @Override
+    protected boolean appearsIn(LocalDate date) {
+        return false;
+    }
 }
