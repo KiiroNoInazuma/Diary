@@ -1,5 +1,6 @@
 import entities.Task;
 import entities.Type;
+import service.ManageTask;
 import service.TaskService;
 import tasks.*;
 import utils.TimeParse;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 
 
 public static void main() {
+    new ManageTask().startMenu();
 
     TaskService taskService = new TaskService();
     Task task = new YearlyTask("ada", Type.WORK, "awdadw");

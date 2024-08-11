@@ -9,7 +9,7 @@ import java.util.*;
 
 public class TaskService {
 
-    public static final Map<Integer, Task> taskMap = new HashMap<>();
+    private final Map<Integer, Task> taskMap = new HashMap<>();
     private Collection<Task> removedTasks;
 
     public void addTask(Task task) {
