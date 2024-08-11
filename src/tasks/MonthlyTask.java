@@ -4,6 +4,7 @@ import entities.Task;
 import entities.Type;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class MonthlyTask extends Task {
     public MonthlyTask(String title, Type type, String description) {
@@ -12,6 +13,7 @@ public class MonthlyTask extends Task {
 
     @Override
     public boolean appearsIn(LocalDate date) {
-        return false;
+        return Objects.equals(date.atStartOfDay().getYear(), getDateTime().getYear())
+                &&Objects.equals(date.atStartOfDay().getDayOfMonth(), getDateTime().getDayOfMonth());
     }
 }

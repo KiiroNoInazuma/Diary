@@ -2,7 +2,6 @@ package tasks;
 
 import entities.Task;
 import entities.Type;
-import utils.TimeParse;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -14,6 +13,6 @@ public class DailyTask extends Task {
 
     @Override
     public boolean appearsIn(LocalDate date) {
-        return Objects.equals(TimeParse.parseDateTask(date.atStartOfDay()), TimeParse.parseDateTask(getDateTime()));
+        return Objects.equals(date.atStartOfDay().getYear(), getDateTime().getYear());
     }
 }

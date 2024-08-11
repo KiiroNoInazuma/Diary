@@ -1,6 +1,7 @@
 package service;
 
 import entities.Task;
+import entities.Type;
 import utils.TimeParse;
 
 import java.time.LocalDate;
@@ -21,8 +22,11 @@ public class TaskService {
 
     public List<Task> getAllByDate(LocalDate date) {
         return taskMap.values().stream()
-                .filter(task ->
-                        Objects.equals(TimeParse.parseDateTask(task.getDateTime()), TimeParse.parseDateTask(date.atStartOfDay())))
+                .filter(task -> task.appearsIn(date))
                 .toList();
+    }
+
+    public void getAllTypeTask(Type type) {
+        taskMap.values().stream().filter(s -> Objects.equals(s.getType(), type)).forEach(System.out::println);
     }
 }
