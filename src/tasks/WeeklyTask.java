@@ -3,7 +3,7 @@ package tasks;
 import entities.Task;
 import entities.Type;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class WeeklyTask extends Task {
     public WeeklyTask(String title, Type type, String description) {
@@ -11,7 +11,7 @@ public class WeeklyTask extends Task {
     }
 
     @Override
-    protected boolean appearsIn(LocalDateTime date) {
+    public boolean appearsIn(LocalDate date) {
         return false;
     }
 }

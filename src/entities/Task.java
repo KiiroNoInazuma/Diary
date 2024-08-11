@@ -2,6 +2,7 @@ package entities;
 
 import utils.TimeParse;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -22,7 +23,7 @@ public abstract class Task {
         this.description = description;
     }
 
-    protected abstract boolean appearsIn(LocalDateTime date);
+    public abstract boolean appearsIn(LocalDate date);
 
     public String getTitle() {
         return title;

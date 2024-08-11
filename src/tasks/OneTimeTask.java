@@ -2,8 +2,10 @@ package tasks;
 
 import entities.Task;
 import entities.Type;
+import utils.TimeParse;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class OneTimeTask extends Task {
     public OneTimeTask(String title, Type type, String description) {
@@ -11,7 +13,7 @@ public class OneTimeTask extends Task {
     }
 
     @Override
-    protected boolean appearsIn(LocalDateTime date) {
-        return false;
+    public boolean appearsIn(LocalDate date) {
+        return Objects.equals(TimeParse.parseDateTask(date.atStartOfDay()), TimeParse.parseDateTask(getDateTime()));
     }
 }
