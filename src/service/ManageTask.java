@@ -1,11 +1,12 @@
 package service;
 
+import entities.Task;
 import entities.Type;
 import tasks.*;
 
 import java.util.Scanner;
 
-public class ManageTask {
+public final class ManageTask {
     private final Scanner scanner = new Scanner(System.in);
     private final TaskService taskService;
     private boolean continueApp = true;
@@ -67,8 +68,8 @@ public class ManageTask {
     private void removeTask() {
         System.out.print("Выберите id задачи, которую требуется удалить: ");
         int num = scanner.nextInt();
-        taskService.remove(num);
-        System.out.printf("Задача id -> %s удалена\n", num);
+        Task remove = taskService.remove(num);
+        System.out.printf("Задача -> %s <- удалена\n", remove);
     }
 
     private Type changeTypeTask(String type) {
@@ -82,7 +83,6 @@ public class ManageTask {
 
 
     private void editText(String text, int x) {
-
         System.out.println("\t".repeat(x) + text);
     }
 
@@ -91,8 +91,8 @@ public class ManageTask {
         System.out.println("\n".repeat(1));
     }
 
-
     public void startMenu() {
+        System.out.println();
         while (continueApp) {
             beautyEditor();
             System.out.println("Если вы хотите выйти из программы введите \"exit\", если хотите продолжить, нажмите \"Enter\"");
