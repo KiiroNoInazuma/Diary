@@ -3,7 +3,7 @@ import entities.Type;
 import service.TaskService;
 import tasks.DailyTask;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Launch {
@@ -16,10 +16,10 @@ public class Launch {
 
         taskService.addTask(task);
         taskService.addTask(task1);
-        String text = "11.08.2024 13:41";
-        LocalDateTime localDateTime = LocalDateTime.parse(text, DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+        String text = "11.08.2024";
 
-        System.out.println(taskService.getAllByDate(localDateTime));
+        LocalDate localDate = LocalDate.parse(text, DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        System.out.println(taskService.getAllByDate(localDate));
 
 
     }

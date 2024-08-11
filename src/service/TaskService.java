@@ -3,7 +3,7 @@ package service;
 import entities.Task;
 import utils.TimeParse;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 
 public class TaskService {
@@ -19,7 +19,10 @@ public class TaskService {
         return taskMap.remove(idTask);
     }
 
-    public List<Task> getAllByDate(LocalDateTime date) {
-        return taskMap.values().stream().filter(task -> Objects.equals(TimeParse.parseDateTask(task.getDateTime()), TimeParse.parseDateTask(date))).toList();
+    public List<Task> getAllByDate(LocalDate date) {
+        return taskMap.values().stream()
+                .filter(task ->
+                        Objects.equals(TimeParse.parseDateTask(task.getDateTime()), TimeParse.parseDateTask(date.atStartOfDay())))
+                .toList();
     }
 }

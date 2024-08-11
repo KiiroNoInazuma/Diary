@@ -70,7 +70,7 @@ public abstract class Task {
         return "id=" + id +
                 ", title=" + title +
                 ", type=" + type +
-                ", dateTime=" + TimeParse.parseDateTask(dateTime) +
+                ", dateTime=" + TimeParse.parseDateTaskShow(dateTime) +
                 ", description=" + description;
     }
 }

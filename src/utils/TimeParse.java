@@ -10,4 +10,8 @@ public interface TimeParse {
     static String parseDateTask(LocalDateTime time) {
         return time.format(DateTimeFormatter.ofPattern(defaultPattern));
     }
+
+    static String parseDateTaskShow(LocalDateTime time) {
+        return time.format(DateTimeFormatter.ofPattern(defaultPattern + " HH:mm"));
+    }
 }
