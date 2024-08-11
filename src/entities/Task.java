@@ -1,19 +1,28 @@
 package entities;
 
-import java.time.LocalDate;
+import utils.TimeParse;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 public abstract class Task {
 
-    private int idGenerator;
+    private static int idGenerator;
     private String title;
-    private Type type;
-    private int id;
-    private LocalDateTime dateTime;
+    private final Type type;
+    private final int id;
+    private final LocalDateTime dateTime;
     private String description;
 
-    protected abstract boolean appearsIn(LocalDate date);
+    public Task(String title, Type type, String description) {
+        id = ++idGenerator;
+        this.title = title;
+        this.type = type;
+        this.dateTime = LocalDateTime.now();
+        this.description = description;
+    }
+
+    protected abstract boolean appearsIn(LocalDateTime date);
 
     public String getTitle() {
         return title;
@@ -47,25 +56,21 @@ public abstract class Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Task task)) return false;
-        return idGenerator == task.idGenerator && id == task.id && Objects.equals(title, task.title)
-                && type == task.type && Objects.equals(dateTime, task.dateTime)
-                && Objects.equals(description, task.description);
+        return id == task.id && Objects.equals(title, task.title) && type == task.type
+                && Objects.equals(dateTime, task.dateTime) && Objects.equals(description, task.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idGenerator, title, type, id, dateTime, description);
+        return Objects.hash(title, type, id, dateTime, description);
     }
 
     @Override
     public String toString() {
-        return "Task{" +
-                "idGenerator=" + idGenerator +
-                ", title='" + title + '\'' +
+        return "id=" + id +
+                ", title=" + title +
                 ", type=" + type +
-                ", id=" + id +
-                ", dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                '}';
+                ", dateTime=" + TimeParse.parseDateTask(dateTime) +
+                ", description=" + description;
     }
 }
