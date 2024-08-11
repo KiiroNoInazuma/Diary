@@ -29,4 +29,7 @@ public class TaskService {
     public void getAllTypeTask(Type type) {
         taskMap.values().stream().filter(s -> Objects.equals(s.getType(), type)).forEach(System.out::println);
     }
+    public void allTask(){
+        System.out.println(taskMap);
+    }
 }

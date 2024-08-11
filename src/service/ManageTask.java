@@ -8,13 +8,13 @@ import java.util.Scanner;
 public class ManageTask {
     private final Scanner scanner = new Scanner(System.in);
     private final TaskService taskService;
+    private boolean continueApp = true;
 
     public ManageTask() {
         this.taskService = new TaskService();
     }
 
     private void beautyEditor() {
-        entText(2);
         editText("ЕЖЕДНЕВНИК", 25);
         editText("   Меню", 25);
         editText(menu(), 12);
@@ -26,9 +26,11 @@ public class ManageTask {
     private void changeMenu(int num) {
         switch (num) {
             case 1 -> addTask();
+            case 2 -> removeTask();
+            case 4 -> taskService.allTask();
             default -> {
                 System.out.println("Неверный выбор. Пожалуйста, попробуйте снова");
-               beautyEditor();
+                beautyEditor();
             }
         }
     }
@@ -49,16 +51,24 @@ public class ManageTask {
 
 
     private void addTask() {
-        System.out.println("Введите название задачи");
+        System.out.print("Введите название задачи: ");
         String title = scanner.next();
-        System.out.println("Введите тип задачи (Рабочая/Личная)");
+        System.out.print("Введите тип задачи (Рабочая/Личная): ");
         Type type = changeTypeTask(scanner.next());
-        System.out.println("Опишите задачу");
+        System.out.print("Опишите задачу: ");
         scanner.nextLine();
         String description = scanner.nextLine();
         System.out.println("Установите период действия задачи <1 - однократная, 2- ежедневная, 3 - еженедельная, 4 - ежемесячная, 5 - ежегодная>");
         int num = scanner.nextInt();
         changeTaskPeriod(num, title, type, description);
+    }
+
+
+    private void removeTask() {
+        System.out.print("Выберите id задачи, которую требуется удалить: ");
+        int num = scanner.nextInt();
+        taskService.remove(num);
+        System.out.printf("Задача id -> %s удалена\n", num);
     }
 
     private Type changeTypeTask(String type) {
@@ -76,13 +86,21 @@ public class ManageTask {
         System.out.println("\t".repeat(x) + text);
     }
 
-    private void entText(int x) {
-        System.out.println("\n".repeat(x));
+    private void entText() {
+        System.out.print("===".repeat(75));
+        System.out.println("\n".repeat(1));
     }
 
 
     public void startMenu() {
-        beautyEditor();
+        while (continueApp) {
+            beautyEditor();
+            System.out.println("Если вы хотите выйти из программы введите \"exit\", если хотите продолжить, нажмите \"Enter\"");
+            scanner.nextLine();
+            if (scanner.nextLine().equalsIgnoreCase("exit")) continueApp = false;
+            entText();
+        }
+        scanner.close();
 
     }
 }
