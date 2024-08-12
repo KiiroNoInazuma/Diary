@@ -29,6 +29,6 @@ public class TaskService {
         taskMap.values().stream().filter(s -> Objects.equals(s.getType(), type)).forEach(System.out::println);
     }
     public void allTask(){
-        System.out.println(taskMap.values());
+        System.out.println(taskMap.values().isEmpty() ? "Ни одной задачи не было найдено." : taskMap.values());
     }
 }

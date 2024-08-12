@@ -2,11 +2,14 @@ package service;
 
 import entities.Task;
 import entities.Type;
+import exceptions.TaskNotFoundException;
 import tasks.*;
 import utils.TimeParse;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public final class ManageTask {
@@ -19,12 +22,23 @@ public final class ManageTask {
     }
 
     private void beautyEditor() {
+        boolean check = false;
         editText("ЕЖЕДНЕВНИК", 25);
-        editText("   Меню", 25);
-        editText(menu(), 12);
-        System.out.print("Сделайте выбор: ");
-        changeMenu(scanner.nextInt());
-
+        while (!check) {
+            editText("   Меню", 25);
+            editText(menu(), 12);
+            System.out.print("Сделайте выбор: ");
+            try {
+                changeMenu(scanner.nextInt());
+                check = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Неверный ввод, попробуйте еще раз");
+                scanner.nextLine();
+            } catch (RuntimeException e) {
+                System.out.println("Такой задачи не существует, удалять нечего");
+                scanner.nextLine();
+            }
+        }
     }
 
     private void changeMenu(int num) {
@@ -61,6 +75,11 @@ public final class ManageTask {
         String title = scanner.next();
         System.out.print("Введите тип задачи (рабочая/личная): ");
         Type type = changeTypeTask(scanner.next());
+        if (Objects.isNull(type)) {
+            System.out.println("Такого типа не существует, повторите ввод");
+            addTask();
+            return;
+        }
         System.out.print("Опишите задачу: ");
         scanner.nextLine();
         String description = scanner.nextLine();
@@ -74,10 +93,13 @@ public final class ManageTask {
         System.out.print("Выберите id задачи, которую требуется удалить: ");
         int num = scanner.nextInt();
         Task remove = taskService.remove(num);
+        if (Objects.isNull(remove)) {
+            throw new TaskNotFoundException("Такой задачи не существует, удалять нечего");
+        }
         System.out.printf("Задача -> %s <- удалена\n", remove);
     }
 
-    private void getAllByDate(){
+    private void getAllByDate() {
         System.out.print("Введите дату задачи: ");
         String date = scanner.next();
         LocalDate localDate = TimeParse.parseDateTask(date);
@@ -94,7 +116,12 @@ public final class ManageTask {
     }
 
     private Type changeTypeTask(String type) {
-        return type.equalsIgnoreCase("рабочая") ? Type.WORK : Type.PERSONAL;
+        if (type.equalsIgnoreCase("рабочая")) {
+            return Type.WORK;
+        } else if (type.equalsIgnoreCase("личная")) {
+            return Type.PERSONAL;
+        }
+        return null;
     }
 
 
@@ -108,7 +135,7 @@ public final class ManageTask {
     }
 
     private void entText() {
-        System.out.print("===".repeat(75));
+        System.out.print("===".repeat(73));
         System.out.println("\n".repeat(1));
     }
 
