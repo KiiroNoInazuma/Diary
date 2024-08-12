@@ -3,7 +3,10 @@ package service;
 import entities.Task;
 import entities.Type;
 import tasks.*;
+import utils.TimeParse;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public final class ManageTask {
@@ -28,7 +31,9 @@ public final class ManageTask {
         switch (num) {
             case 1 -> addTask();
             case 2 -> removeTask();
-            case 4 -> taskService.allTask();
+            case 3 -> getAllByDate();
+            case 4 -> getAllTypeTask();
+            case 5 -> taskService.allTask();
             default -> {
                 System.out.println("Неверный выбор. Пожалуйста, попробуйте снова");
                 beautyEditor();
@@ -54,12 +59,12 @@ public final class ManageTask {
     private void addTask() {
         System.out.print("Введите название задачи: ");
         String title = scanner.next();
-        System.out.print("Введите тип задачи (Рабочая/Личная): ");
+        System.out.print("Введите тип задачи (рабочая/личная): ");
         Type type = changeTypeTask(scanner.next());
         System.out.print("Опишите задачу: ");
         scanner.nextLine();
         String description = scanner.nextLine();
-        System.out.println("Установите период действия задачи <1 - однократная, 2- ежедневная, 3 - еженедельная, 4 - ежемесячная, 5 - ежегодная>");
+        System.out.println("Установите период действия задачи <1 - однократная, 2 - ежедневная, 3 - еженедельная, 4 - ежемесячная, 5 - ежегодная>");
         int num = scanner.nextInt();
         changeTaskPeriod(num, title, type, description);
     }
@@ -72,13 +77,29 @@ public final class ManageTask {
         System.out.printf("Задача -> %s <- удалена\n", remove);
     }
 
+    private void getAllByDate(){
+        System.out.print("Введите дату задачи: ");
+        String date = scanner.next();
+        LocalDate localDate = TimeParse.parseDateTask(date);
+        List<Task> allByDate = taskService.getAllByDate(localDate);
+        System.out.println(allByDate);
+    }
+
+    private void getAllTypeTask() {
+        Type type;
+        System.out.print("Выберите тип задачи (рабочая/личная): ");
+        String typeTask = scanner.next();
+        type = typeTask.equalsIgnoreCase("рабочая") ? Type.WORK : Type.PERSONAL;
+        taskService.getAllTypeTask(type);
+    }
+
     private Type changeTypeTask(String type) {
-        return type.equals("Рабочая") ? Type.WORK : Type.PERSONAL;
+        return type.equalsIgnoreCase("рабочая") ? Type.WORK : Type.PERSONAL;
     }
 
 
     private String menu() {
-        return "1 - Добавить задачу; 2 - Удалить задачу; 3 - Показать задачи на текущее число;  4 - Показать все задачи в ежедневнике.";
+        return "1 - Добавить задачу; 2 - Удалить задачу; 3 - Показать задачи на текущее число;  4 - Показать задачи по типу; 5 - Показать все задачи в ежедневнике.";
     }
 
 
