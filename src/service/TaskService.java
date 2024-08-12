@@ -2,7 +2,6 @@ package service;
 
 import entities.Task;
 import entities.Type;
-import utils.TimeParse;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -30,6 +29,6 @@ public class TaskService {
         taskMap.values().stream().filter(s -> Objects.equals(s.getType(), type)).forEach(System.out::println);
     }
     public void allTask(){
-        System.out.println(taskMap);
+        System.out.println(taskMap.values());
     }
 }
