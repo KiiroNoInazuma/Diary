@@ -7,6 +7,7 @@ import tasks.*;
 import utils.TimeParse;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +35,11 @@ public final class ManageTask {
             } catch (InputMismatchException e) {
                 System.out.println("Неверный ввод, попробуйте еще раз");
                 scanner.nextLine();
-            } catch (RuntimeException e) {
-                System.out.println("Такой задачи не существует, удалять нечего");
+            }catch (DateTimeParseException e){
+                System.out.println("Неверный формат даты, введите дату в формате \"dd.MM.yyyy\"");
+            }
+            catch (RuntimeException e) {
+                System.out.println("Такой задачи не существует");
                 scanner.nextLine();
             }
         }
@@ -86,6 +90,7 @@ public final class ManageTask {
         System.out.println("Установите период действия задачи <1 - однократная, 2 - ежедневная, 3 - еженедельная, 4 - ежемесячная, 5 - ежегодная>");
         int num = scanner.nextInt();
         changeTaskPeriod(num, title, type, description);
+        System.out.println("Задача успешно записана.");
     }
 
 
@@ -104,15 +109,19 @@ public final class ManageTask {
         String date = scanner.next();
         LocalDate localDate = TimeParse.parseDateTask(date);
         List<Task> allByDate = taskService.getAllByDate(localDate);
-        System.out.println(allByDate);
+        System.out.println(allByDate.isEmpty() ? "На текущую дату задача не найдена" : allByDate);
     }
 
     private void getAllTypeTask() {
-        Type type;
         System.out.print("Выберите тип задачи (рабочая/личная): ");
         String typeTask = scanner.next();
-        type = typeTask.equalsIgnoreCase("рабочая") ? Type.WORK : Type.PERSONAL;
-        taskService.getAllTypeTask(type);
+        if (typeTask.equalsIgnoreCase("рабочая")) {
+            System.out.println(Objects.requireNonNull(taskService.getAllTypeTask(Type.WORK)));
+        } else if (typeTask.equalsIgnoreCase("личная")) {
+            System.out.println(Objects.requireNonNull(taskService.getAllTypeTask(Type.PERSONAL)));
+        } else {
+            System.out.println("Ни одной задачи не найдено");
+        }
     }
 
     private Type changeTypeTask(String type) {

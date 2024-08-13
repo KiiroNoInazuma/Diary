@@ -25,10 +25,12 @@ public class TaskService {
                 .toList();
     }
 
-    public void getAllTypeTask(Type type) {
-        taskMap.values().stream().filter(s -> Objects.equals(s.getType(), type)).forEach(System.out::println);
+    public List<Task> getAllTypeTask(Type type) {
+        List<Task> list = taskMap.values().stream().filter(s -> Objects.equals(s.getType(), type)).toList();
+        return list.isEmpty() ? null : list;
     }
-    public void allTask(){
+
+    public void allTask() {
         System.out.println(taskMap.values().isEmpty() ? "Ни одной задачи не было найдено." : taskMap.values());
     }
 }

@@ -68,8 +68,18 @@ public abstract class Task {
 
     @Override
     public String toString() {
-        return String.format("id=%s, title=%s, dateTime=%s, description=%s",
-                id, title, TimeParse.parseDateTaskShow(dateTime), description);
-
+        return String.format(
+                """
+                       \s
+                        ------------------------------
+                         id = %s
+                         title = %s
+                         type = %s
+                         dateTime = %s
+                         description = %s
+                        ------------------------------
+               \s""",
+                id, title, type, TimeParse.parseDateTaskShow(dateTime), description
+        );
     }
 }
