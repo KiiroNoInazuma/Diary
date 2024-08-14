@@ -9,28 +9,38 @@ import java.util.*;
 public class TaskService {
 
     private final Map<Integer, Task> taskMap = new HashMap<>();
-    private Collection<Task> removedTasks;
+    private final Collection<Task> removedTasks = new ArrayList<>();
 
-    public void addTask(Task task) {
+    void addTask(Task task) {
         taskMap.put(task.getId(), task);
     }
 
-    public Task remove(int idTask) {
-        return taskMap.remove(idTask);
+    Task remove(int idTask) {
+        Task remove = taskMap.remove(idTask);
+        if (remove != null) removedTasks.add(remove);
+        return remove;
     }
 
-    public List<Task> getAllByDate(LocalDate date) {
+    void allRemovedTasks() {
+        System.out.println(removedTasks.isEmpty() ? "Нет задач в архиве." : removedTasks);
+    }
+
+    List<Task> getAllByDate(LocalDate date) {
         return taskMap.values().stream()
                 .filter(task -> task.appearsIn(date))
                 .toList();
     }
 
-    public List<Task> getAllTypeTask(Type type) {
+    List<Task> getAllTypeTask(Type type) {
         List<Task> list = taskMap.values().stream().filter(s -> Objects.equals(s.getType(), type)).toList();
         return list.isEmpty() ? null : list;
     }
 
-    public void allTask() {
+    void allTask() {
         System.out.println(taskMap.values().isEmpty() ? "Ни одной задачи не было найдено." : taskMap.values());
+    }
+    void editTask(int numTask, String title, String description){
+        taskMap.get(numTask).setTitle(title);
+        taskMap.get(numTask).setDescription(description);
     }
 }

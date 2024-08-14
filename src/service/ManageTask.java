@@ -6,6 +6,8 @@ import exceptions.TaskNotFoundException;
 import tasks.*;
 import utils.TimeParse;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.InputMismatchException;
@@ -27,7 +29,7 @@ public final class ManageTask {
         editText("ЕЖЕДНЕВНИК", 25);
         while (!check) {
             editText("   Меню", 25);
-            editText(menu(), 12);
+            editText(menu(), 10);
             System.out.print("Сделайте выбор: ");
             try {
                 changeMenu(scanner.nextInt());
@@ -35,10 +37,9 @@ public final class ManageTask {
             } catch (InputMismatchException e) {
                 System.out.println("Неверный ввод, попробуйте еще раз");
                 scanner.nextLine();
-            }catch (DateTimeParseException e){
+            } catch (DateTimeParseException e) {
                 System.out.println("Неверный формат даты, введите дату в формате \"dd.MM.yyyy\"");
-            }
-            catch (RuntimeException e) {
+            } catch (RuntimeException e) {
                 System.out.println("Такой задачи не существует");
                 scanner.nextLine();
             }
@@ -49,9 +50,11 @@ public final class ManageTask {
         switch (num) {
             case 1 -> addTask();
             case 2 -> removeTask();
-            case 3 -> getAllByDate();
-            case 4 -> getAllTypeTask();
-            case 5 -> taskService.allTask();
+            case 3 -> allRemovedTasks();
+            case 4 -> getAllByDate();
+            case 5 -> getAllTypeTask();
+            case 6 -> taskService.allTask();
+            case 7 -> editTask();
             default -> {
                 System.out.println("Неверный выбор. Пожалуйста, попробуйте снова");
                 beautyEditor();
@@ -93,6 +96,28 @@ public final class ManageTask {
         System.out.println("Задача успешно записана.");
     }
 
+    private void editTask() {
+        System.out.print("Введите id задачи для редактирования: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("Введите новый заголовок: ");
+        String title = scanner.nextLine();
+        System.out.print("Введите новое описание: ");
+        String description = scanner.nextLine();
+        taskService.editTask(id, title, description);
+        try {
+            fixEnt();
+        } catch (AWTException e) {
+            System.out.println("Ошибка");
+        }
+
+    }
+
+    void fixEnt() throws AWTException {
+        Robot robot = new Robot();
+        robot.keyPress(KeyEvent.VK_ENTER);
+        robot.keyRelease(KeyEvent.VK_ENTER);
+    }
 
     private void removeTask() {
         System.out.print("Выберите id задачи, которую требуется удалить: ");
@@ -102,6 +127,10 @@ public final class ManageTask {
             throw new TaskNotFoundException("Такой задачи не существует, удалять нечего");
         }
         System.out.printf("Задача -> %s <- удалена\n", remove);
+    }
+
+    private void allRemovedTasks() {
+        taskService.allRemovedTasks();
     }
 
     private void getAllByDate() {
@@ -135,7 +164,12 @@ public final class ManageTask {
 
 
     private String menu() {
-        return "1 - Добавить задачу; 2 - Удалить задачу; 3 - Показать задачи на текущее число;  4 - Показать задачи по типу; 5 - Показать все задачи в ежедневнике.";
+        return """
+                                                         1 - Добавить задачу;     4 - Показать задачи на текущее число;
+                                                             \t\t\t\t\t\t\t\t\t 2 - Удалить задачу;      5 - Показать задачи по типу;
+                                                         \t\t\t\t\t\t\t\t\t     3 - Архив задач;         6 - Показать все задачи в ежедневнике;
+                                                                    \t\t\t\t\t\t\t\t\t     7 - Редактировать задачу.
+                """;
     }
 
 
