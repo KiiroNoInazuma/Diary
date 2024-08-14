@@ -22,7 +22,7 @@ public class TaskService {
     }
 
     void allRemovedTasks() {
-        System.out.println(removedTasks.isEmpty() ? "Нет задач в архиве." : removedTasks);
+        System.out.println(removedTasks.isEmpty() ? "\u001B[33mНет задач в архиве.\u001B[0m" : removedTasks);
     }
 
     List<Task> getAllByDate(LocalDate date) {
@@ -37,7 +37,7 @@ public class TaskService {
     }
 
     void allTask() {
-        System.out.println(taskMap.values().isEmpty() ? "Ни одной задачи не было найдено." : taskMap.values());
+        System.out.println(taskMap.values().isEmpty() ? "\u001B[33mНи одной задачи не было найдено.\u001B[0m" : taskMap.values());
     }
     void editTask(int numTask, String title, String description){
         taskMap.get(numTask).setTitle(title);

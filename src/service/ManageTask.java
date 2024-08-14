@@ -26,21 +26,27 @@ public final class ManageTask {
 
     private void beautyEditor() {
         boolean check = false;
-        editText("ЕЖЕДНЕВНИК", 25);
+        editText("\u001B[34m██████╗░██╗░█████╗░██████╗░██╗░░░██╗\u001B[0m", 22);
+        editText("\u001B[34m██╔══██╗██║██╔══██╗██╔══██╗╚██╗░██╔╝\u001B[0m", 22);
+        editText("\u001B[34m██║░░██║██║███████║██████╔╝░╚████╔╝░\u001B[0m", 22);
+        editText("\u001B[34m██║░░██║██║██╔══██║██╔══██╗░░╚██╔╝░░\u001B[0m", 22);
+        editText("\u001B[34m██████╔╝██║██║░░██║██║░░██║░░░██║░░░\u001B[0m", 22);
+        editText("\u001B[34m╚═════╝░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░\u001B[0m", 22);
+        System.out.println();
         while (!check) {
-            editText("   Меню", 25);
+            editText("   ~\uD835\uDCDC\uD835\uDCEE\uD835\uDCD7ю~", 25);
             editText(menu(), 10);
             System.out.print("Сделайте выбор: ");
             try {
                 changeMenu(scanner.nextInt());
                 check = true;
             } catch (InputMismatchException e) {
-                System.out.println("Неверный ввод, попробуйте еще раз");
+                System.out.println("\u001B[31mНеверный ввод, попробуйте еще раз!\u001B[0m");
                 scanner.nextLine();
             } catch (DateTimeParseException e) {
-                System.out.println("Неверный формат даты, введите дату в формате \"dd.MM.yyyy\"");
+                System.out.println("\u001B[34mНеверный формат даты, введите дату в формате \"dd.MM.yyyy\"\u001B[0m");
             } catch (RuntimeException e) {
-                System.out.println("Такой задачи не существует");
+                System.out.println("\u001B[31mТакой задачи не существует!\u001B[0m");
                 scanner.nextLine();
             }
         }
@@ -56,7 +62,7 @@ public final class ManageTask {
             case 6 -> taskService.allTask();
             case 7 -> editTask();
             default -> {
-                System.out.println("Неверный выбор. Пожалуйста, попробуйте снова");
+                System.out.println("\u001B[31mНеверный выбор. Пожалуйста, попробуйте снова!\u001B[0m");
                 beautyEditor();
             }
         }
@@ -70,7 +76,7 @@ public final class ManageTask {
             case 4 -> taskService.addTask(new MonthlyTask(title, type, description));
             case 5 -> taskService.addTask(new YearlyTask(title, type, description));
             default -> {
-                System.out.println("Неверный выбор. Пожалуйста, попробуйте снова");
+                System.out.println("\u001B[31mНеверный выбор. Пожалуйста, попробуйте снова!\u001B[0m");
                 beautyEditor();
             }
         }
@@ -78,12 +84,13 @@ public final class ManageTask {
 
 
     private void addTask() {
+        scanner.nextLine();
         System.out.print("Введите название задачи: ");
-        String title = scanner.next();
+        String title = scanner.nextLine();
         System.out.print("Введите тип задачи (рабочая/личная): ");
         Type type = changeTypeTask(scanner.next());
         if (Objects.isNull(type)) {
-            System.out.println("Такого типа не существует, повторите ввод");
+            System.out.println("\u001B[31mТакого типа не существует, повторите ввод!\u001B[0m");
             addTask();
             return;
         }
@@ -93,7 +100,7 @@ public final class ManageTask {
         System.out.println("Установите период действия задачи <1 - однократная, 2 - ежедневная, 3 - еженедельная, 4 - ежемесячная, 5 - ежегодная>");
         int num = scanner.nextInt();
         changeTaskPeriod(num, title, type, description);
-        System.out.println("Задача успешно записана.");
+        System.out.println("\u001B[34mЗадача успешно записана.\u001B[0m");
     }
 
     private void editTask() {
@@ -124,7 +131,7 @@ public final class ManageTask {
         int num = scanner.nextInt();
         Task remove = taskService.remove(num);
         if (Objects.isNull(remove)) {
-            throw new TaskNotFoundException("Такой задачи не существует, удалять нечего");
+            throw new TaskNotFoundException("\u001B[31mТакой задачи не существует, удалять нечего!\u001B[0m");
         }
         System.out.printf("Задача -> %s <- удалена\n", remove);
     }
@@ -138,7 +145,7 @@ public final class ManageTask {
         String date = scanner.next();
         LocalDate localDate = TimeParse.parseDateTask(date);
         List<Task> allByDate = taskService.getAllByDate(localDate);
-        System.out.println(allByDate.isEmpty() ? "На текущую дату задача не найдена" : allByDate);
+        System.out.println(allByDate.isEmpty() ? "\u001B[34mНа текущую дату задача не найдена!\u001B[0m" : allByDate);
     }
 
     private void getAllTypeTask() {
@@ -149,7 +156,7 @@ public final class ManageTask {
         } else if (typeTask.equalsIgnoreCase("личная")) {
             System.out.println(Objects.requireNonNull(taskService.getAllTypeTask(Type.PERSONAL)));
         } else {
-            System.out.println("Ни одной задачи не найдено");
+            System.out.println("\u001B[33mНи одной задачи не найдено!\u001B[0m");
         }
     }
 
@@ -165,10 +172,10 @@ public final class ManageTask {
 
     private String menu() {
         return """
-                                                         1 - Добавить задачу;     4 - Показать задачи на текущее число;
-                                                             \t\t\t\t\t\t\t\t\t 2 - Удалить задачу;      5 - Показать задачи по типу;
-                                                         \t\t\t\t\t\t\t\t\t     3 - Архив задач;         6 - Показать все задачи в ежедневнике;
-                                                                    \t\t\t\t\t\t\t\t\t     7 - Редактировать задачу.
+                                                     1 - Добавить задачу;     4 - Показать задачи на текущее число;
+                                                          \t\t\t\t\t\t\t\t\t 2 - Удалить задачу;      5 - Показать задачи по типу;
+                                                      \t\t\t\t\t\t\t\t\t     3 - Архив задач;         6 - Показать все задачи в ежедневнике;
+                                                                 \t\t\t\t\t\t\t\t\t     7 - Редактировать задачу.
                 """;
     }
 

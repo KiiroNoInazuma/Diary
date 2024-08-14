@@ -25,10 +25,6 @@ public abstract class Task {
 
     public abstract boolean appearsIn(LocalDate date);
 
-    public String getTitle() {
-        return title;
-    }
-
     public Type getType() {
         return type;
     }
@@ -39,10 +35,6 @@ public abstract class Task {
 
     public LocalDateTime getDateTime() {
         return dateTime;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setTitle(String title) {
@@ -70,14 +62,14 @@ public abstract class Task {
     public String toString() {
         return String.format(
                 """
-                       \s
-                        ------------------------------
-                         id = %s
-                         title = %s
-                         type = %s
-                         dateTime = %s
-                         description = %s
-                        ------------------------------
+              \s
+                   ------------------------------------------------------------
+                    \u001B[34mid\u001B[0m = %s
+                    \u001B[34mtitle\u001B[0m = %s
+                    \u001B[34mtype\u001B[0m = %s
+                    \u001B[34mdateTime\u001B[0m = %s
+                    \u001B[34mdescription\u001B[0m = %s
+                   ------------------------------------------------------------
                \s""",
                 id, title, type, TimeParse.parseDateTaskShow(dateTime), description
         );
